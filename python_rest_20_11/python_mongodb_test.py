@@ -152,5 +152,5 @@ def add_star():
 
 
 if __name__ == '__main__':
-	app.run(host='18.139.111.217', port:5000, debug= True)
+	app.run(host='18.139.111.217', port=5000, debug= True)
     app.run(debug=True)
