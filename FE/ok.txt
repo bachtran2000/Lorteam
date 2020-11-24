@@ -1,0 +1,3 @@
+pip install gdown
+
+gdown https://drive.google.com/uc?id=1vE0mYnu_gYFHP8EkSgMdnVU6_Rh9n83w
