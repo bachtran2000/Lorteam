@@ -6,6 +6,7 @@ from flask_pymongo import PyMongo
 import pandas as pd
 import numpy as np
 import pickle
+import locale
 from sklearn.ensemble import RandomForestRegressor
 
 app = Flask(__name__)
@@ -258,9 +259,6 @@ def get_predict():
 		LoaiTin = data['LoaiTin'].mean()
 	
 
-	apartment = mongo.db.Apartment
-	output = []
-
 	ThongTin = [DienTich, SoPhongNgu, SoToilet,ChuDauTu,ViDo,KinhDo,NoiThat,LoaiTin,Quan,HuongNha,HuongBanCong]
 
 	ThongTin = np.array(ThongTin)
@@ -273,7 +271,7 @@ def get_predict():
 
 	dudoan = round(dudoan,2)*1e6
 
-	return jsonify(dudoan)
+	return jsonify(f"{dudoan:,}")
 
 
 @app.route('/star', methods=['POST'])
