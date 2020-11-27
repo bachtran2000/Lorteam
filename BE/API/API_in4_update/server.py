@@ -24,44 +24,47 @@ def timthongtin(one=False):
     input = request.args.to_dict()
     sql_query = ''
 
+
+
     if 'DienTich' in input:
-        DienTich = input['DienTich']
-        dau = int(int(DienTich) * 0.85)
-        cuoi = int(int(DienTich) * 1.15)
-        sql_query = f"select  * from data01 where (DienTich > {dau} and DienTich < {cuoi})"
+        if input['DienTich'] != '':
+            DienTich = input['DienTich']
+            dau = int(int(DienTich) * 0.85)
+            cuoi = int(int(DienTich) * 1.15)
+            sql_query = f"select  * from data01 where (DienTich > {dau} and DienTich < {cuoi})"
     if 'Quan' in input:
-        Quan = input['Quan']
-        if Quan != '-1':
+        if input["Quan"] != "":
+            Quan = input['Quan']
             add_Quan = f" and Quan = \'{Quan}\'  "
             sql_query += add_Quan
     if 'SoPhongNgu' in input:
-        SoPhongNgu = input['SoPhongNgu']
-        if SoPhongNgu != '-1':
+        if input['SoPhongNgu'] != '':
+            SoPhongNgu = input['SoPhongNgu']
             add_SoPhongNgu = f" and SoPhongNgu = \'{SoPhongNgu}\' "
             sql_query += add_SoPhongNgu
     if 'SoToilet' in input:
-        SoToilet = input['SoToilet']
-        if SoToilet != '-1':
+        if input["SoToilet"] != "":
+            SoToilet = input['SoToilet']
             add_SoToilet = f" and SoToilet = \'{SoToilet}\' "
             sql_query += add_SoToilet
     if 'HuongNha' in input:
-        HuongNha = input['HuongNha']
-        if HuongNha != '-1':
+        if input["HuongNha"] != "":
+            HuongNha = input['HuongNha']
             add_HuongNha = f" and HuongNha = \'{HuongNha}\' "
             sql_query += add_HuongNha
     if 'HuongBanCong' in input:
-        HuongBanCong = input['HuongBanCong']
-        if HuongBanCong != '-1':
+        if "HuongBanCong" != "":
+            HuongBanCong = input['HuongBanCong']
             add_HuongBanCong = f" and HuongBanCong = \'{HuongBanCong}\' "
             sql_query += add_HuongBanCong
     if 'NoiThat' in input:
-        NoiThat = input['NoiThat']
-        if NoiThat != '-1':
+        if "NoiThat" != "":
+            NoiThat = input['NoiThat']
             add_NoiThat = f" and NoiThat = \'{NoiThat}\' "
             sql_query += add_NoiThat
     if 'ChuDauTu' in input:
-        ChuDauTu = input['ChuDauTu']
-        if ChuDauTu != '-1':
+        if "ChuDauTu" != "":
+            ChuDauTu = input['ChuDauTu']
             add_ChuDauTu = f" and ChuDauTu = \'{ChuDauTu}\' "
             sql_query += add_ChuDauTu
     sql_query += " limit 6"
