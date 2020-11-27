@@ -55,17 +55,17 @@ def timthongtin(one=False):
             add_HuongNha = f" and HuongNha = \'{HuongNha}\' "
             sql_query += add_HuongNha
     if 'HuongBanCong' in input:
-        if "HuongBanCong" != "":
+        if input["HuongBanCong"] != "":
             HuongBanCong = input['HuongBanCong']
             add_HuongBanCong = f" and HuongBanCong = \'{HuongBanCong}\' "
             sql_query += add_HuongBanCong
     if 'NoiThat' in input:
-        if "NoiThat" != "":
+        if input["NoiThat"] != "":
             NoiThat = input['NoiThat']
             add_NoiThat = f" and NoiThat = \'{NoiThat}\' "
             sql_query += add_NoiThat
     if 'ChuDauTu' in input:
-        if "ChuDauTu" != "":
+        if input["ChuDauTu"] != "":
             ChuDauTu = input['ChuDauTu']
             add_ChuDauTu = f" and ChuDauTu = \'{ChuDauTu}\' "
             sql_query += add_ChuDauTu
@@ -225,4 +225,5 @@ def quan():
 
 
 if __name__ == '__main__':
+    # app.run()
     app.run(host='0.0.0.0',port=5002,debug=True)
