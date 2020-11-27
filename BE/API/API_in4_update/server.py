@@ -26,9 +26,9 @@ def timthongtin(one=False):
 
     if 'DienTich' in input:
         DienTich = input['DienTich']
-        dau = int(int(DienTich) * 0.98)
-        cuoi = int(int(DienTich) * 1.02)
-        sql_query = f"select * from data01 where (DienTich > {dau} and DienTich < {cuoi})"
+        dau = int(int(DienTich) * 0.85)
+        cuoi = int(int(DienTich) * 1.15)
+        sql_query = f"select  * from data01 where (DienTich > {dau} and DienTich < {cuoi})"
     if 'Quan' in input:
         Quan = input['Quan']
         if Quan != '-1':
@@ -64,7 +64,7 @@ def timthongtin(one=False):
         if ChuDauTu != '-1':
             add_ChuDauTu = f" and ChuDauTu = \'{ChuDauTu}\' "
             sql_query += add_ChuDauTu
-
+    sql_query += " limit 6"
     # ### CONNECT DATA
     conn = sqlite3.connect('xa01.db')
     cur = conn.cursor()
