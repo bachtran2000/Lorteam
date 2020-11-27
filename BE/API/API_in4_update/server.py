@@ -8,7 +8,7 @@ import requests
 
 app = Flask(__name__)
 api = Api(app)
-ACCESS_TOKEN = 'EAAR9Xg2Dnu4BAJf1j8YCObxHac5aW2l61UZCs9w52iCzTTkTEJxc0Uh6dLQIXJgOPaW0lhdvcTJv0YK84QuMMI6rFmOex5Olk6jtNn2b5jIJ9Qm9MqnnSzGVUtSwRPcZC36rP3UdXuaEq0pbik4ar1Is5a5BrH9MhU3iyzEPBtRpegWylI'
+ACCESS_TOKEN = 'EAAR9Xg2Dnu4BAN4eotC3Ol7WY5VAbEN550s1vh63NbhhIzGBgZBZAmHbgJ6QbldoD2FGJ5UZCAWZByQVB4nVLkpsfBx2fz3bk1s8jZAWBEcLFQALICvdo1EoEkidOc8zv3IyzxlK4mUjKs1xxtnALZCwtZC6HmZAKUZB29CGYQiHPnAsBvZCVW5SMg'
 VERIFY_TOKEN = 'VERIFY_TOKEN'
 bot = Bot(ACCESS_TOKEN)
 
@@ -109,7 +109,7 @@ def receive_message():
                         print(" trước khi vào vog if >>>>>>>>>>>>>>>>>>>>>>>")
                         print(message['message'].get('text'))
                         Tin_nhan = message['message'].get('text')
-                        CHECK = Tin_nhan.find('apartment/?', 0, len(Tin_nhan))
+                        CHECK = Tin_nhan.find('DienTich=', 0, len(Tin_nhan))
                         if CHECK == 0:
                             response_sent_text = get_message_after(message['message'].get('text'))
                             send_message(recipient_id, response_sent_text)
@@ -149,14 +149,14 @@ def get_message(user_response):
     elif user_response in exit_commands:
         count = 0
         return "tạm biệt, hẹn gặp lại!!!"
-    elif user_response.find('apartment/?', 0, len(user_response)) == -1 and user_response[0] != '1':
+    elif user_response.find('DienTich', 0, len(user_response)) == -1 and user_response[0] != '1':
         count = 0
         return "xin chào, đây là Chatbot dự đoán giá. Nhập 1 để chọn dự đoán, nhập 0 để thoát"
     elif user_response[0] == "1":
         count = 1
         print('1 xuat hiện ở trong vòng if')
         print(count)
-        return 'Nhập theo mẫu sau để dự đoán: apartment/?DienTich=...&SoPhongNgu=...&Quan=...'
+        return 'Nhập theo mẫu sau để dự đoán: DienTich=..., SoPhongNgu=..., Quan=..., SoToilet= ...'
 
 
 
@@ -183,8 +183,17 @@ def get_message_after(user_response):
     print("COUNT = %d" % count)
     print('user_response = %s' % user_response)
 
-    link = 'http://18.139.111.217:5000/'
-    link_rq = link + user_response
+    link = 'http://18.139.111.217:5000/apartment/?'
+    input = user_response
+    input = input.replace(" ", "")
+    input = input.replace(",", "&")
+    input = input.replace("HaiBàTrưng", "Hai Bà Trưng")
+    input = input.replace("ĐốngĐa", "Đống Đa")
+
+
+
+    link_rq = link + input
+
     print(" link nhu sau: ><")
     print(link_rq)
     rq = requests.get(link_rq)
@@ -211,4 +220,4 @@ def quan():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0',port=5002,debug=True)
