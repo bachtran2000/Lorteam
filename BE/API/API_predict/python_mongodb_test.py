@@ -105,17 +105,23 @@ def get_percent():
         NoiThat = data['NoiThat'].mean()
     if 'ChuDauTu' in input:
         ChuDauTu = input['ChuDauTu']
-        for j in ChuDauTu_data.keys():
-            if(j == ChuDauTu):
-                ChuDauTu = ChuDauTu_data[j]
+        if(ChuDauTu !=''):
+            for j in ChuDauTu_data.keys():
+                if(j == ChuDauTu):
+                    ChuDauTu = ChuDauTu_data[j]
+        else:
+            ChuDauTu = 0
         print(ChuDauTu)
     else:
         ChuDauTu = 0
     if 'Quan' in input:
         Quan = input['Quan']
-        for j in Quan_data.keys():
-            if(j == Quan):
-                Quan = Quan_data[j]
+        if(Quan!=''):
+            for j in Quan_data.keys():
+                if(j == Quan):
+                    Quan = Quan_data[j]
+        else:
+            Quan = 0
         print(Quan)
     else:
         Quan = 0
