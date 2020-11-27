@@ -16,10 +16,10 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/Apartment'
 
 mongo = PyMongo(app)
 
-data = pd.read_csv("data_model_20_11.csv", index_col=None)
+data = pd.read_csv("BE/API/API_predict/data_model_20_11.csv", index_col=None)
 
 
-model = pickle.load(open('random_forest_model.pkl', 'rb'))
+model = pickle.load(open('BE/API/API_predict/random_forest_model.pkl', 'rb'))
 
 
 @app.route('/house/', methods=['GET'])
@@ -135,11 +135,18 @@ def get_all_stars():
 	else:
 		LoaiTin = data['LoaiTin'].mean()
 	
-	find_one = data[(data['DienTich']== DienTich)&(data['Quan']==Quan )&(data['ChuDauTu']==ChuDauTu)]
+	apartment = mongo.db.Apartment
 
-	find_one.drop(columns = {'Index','TieuDe','url','HinhAnh','MoTa','NgayDang','DienThoai'},axis=1,inplace=True)
-	find_one = find_one.to_json()
-	return jsonify(find_one)
+	find_apartment = apartment.find({'DienTich': {'$gt': 60,'$lt':65}}).limit(5)
+
+	for c in find_apartment:
+		print(c['DienTich'])
+	
+	#find_one = data[(data['DienTich']== DienTich)&(data['Quan']==Quan )&(data['ChuDauTu']==ChuDauTu)]
+
+	#find_one.drop(columns = {'Index','TieuDe','url','HinhAnh','MoTa','NgayDang','DienThoai'},axis=1,inplace=True)
+	#find_one = find_one.to_json()
+	return jsonify()
 
 @app.route('/apartment/', methods=['GET'])
 def get_predict():
@@ -256,7 +263,7 @@ def get_predict():
 		else:
 			LoaiTin = int(LoaiTin)
 	else:
-		LoaiTin = data['LoaiTin'].mean()
+		LoaiTin = data['LoaiTin'].mean()										
 	
 
 	ThongTin = [DienTich, SoPhongNgu, SoToilet,ChuDauTu,ViDo,KinhDo,NoiThat,LoaiTin,Quan,HuongNha,HuongBanCong]
@@ -269,9 +276,13 @@ def get_predict():
 
 	dudoan = float(dudoan[0])/(DienTich*1e6)
 
-	dudoan = round(dudoan,2)*1e6
+	dudoan = round(dudoan,1)
 
-	return jsonify(f"{dudoan:,}")
+	dudoan_text = " triệu/m2"
+
+	dudoan_text = str(dudoan) + dudoan_text
+
+	return jsonify(dudoan_text)
 
 
 @app.route('/star', methods=['POST'])
