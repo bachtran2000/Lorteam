@@ -69,7 +69,7 @@ def timthongtin(one=False):
             ChuDauTu = input['ChuDauTu']
             add_ChuDauTu = f" and ChuDauTu = \'{ChuDauTu}\' "
             sql_query += add_ChuDauTu
-    # sql_query += " limit 6"
+    sql_query += " limit 10"
     # ### CONNECT DATA
     conn = sqlite3.connect('xa01.db')
     cur = conn.cursor()
