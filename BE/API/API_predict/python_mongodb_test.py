@@ -20,7 +20,6 @@ mongo = PyMongo(app)
 data = pd.read_csv("data_model_20_11.csv", index_col=None)
 
 
-
 model = pickle.load(open('random_forest_model.pkl', 'rb'))
 
 with open('Quan.json') as json_file:
@@ -29,11 +28,10 @@ with open('ChuDauTu.json') as json_file:
     ChuDauTu_data = json.load(json_file)
 
 
-
 @app.route('/percent/', methods=['GET'])
 def get_percent():
     input = request.args.to_dict()
-    
+
     if 'DienTich' in input:
         DienTich = input['DienTich']
         DienTich = float(DienTich)
@@ -144,10 +142,10 @@ def get_percent():
         else:
             LoaiTin = int(LoaiTin)
     else:
-        LoaiTin = data['LoaiTin'].mean()										
-    
+        LoaiTin = data['LoaiTin'].mean()
 
-    ThongTin = [DienTich, SoPhongNgu, SoToilet,ChuDauTu,ViDo,KinhDo,NoiThat,LoaiTin,Quan,HuongNha,HuongBanCong]
+    ThongTin = [DienTich, SoPhongNgu, SoToilet, ChuDauTu, ViDo,
+                KinhDo, NoiThat, LoaiTin, Quan, HuongNha, HuongBanCong]
 
     ThongTin = np.array(ThongTin)
 
@@ -157,17 +155,21 @@ def get_percent():
 
     dudoan = float(dudoan[0])/(DienTich*1e6)
 
-    dudoan = round(dudoan,1)
+    dudoan = round(dudoan, 1)
 
-    print(Quan,ChuDauTu)
-    if(ChuDauTu ==0 & Quan ==0):
-        dochinhxac = data[(data['DienTich']<=DienTich+10)&(data['DienTich'] >= DienTich-10) & (data['SoPhongNgu'] == SoPhongNgu ) & (data['SoToilet'] == SoToilet)].mean()
+    print(Quan, ChuDauTu)
+    if(ChuDauTu == 0 & Quan == 0):
+        dochinhxac = data[(data['DienTich'] <= DienTich+10) & (data['DienTich'] >= DienTich-10)
+                          & (data['SoPhongNgu'] == SoPhongNgu) & (data['SoToilet'] == SoToilet)].mean()
     elif(Quan == 0):
-        dochinhxac = data[(data['DienTich']<=DienTich+10)&(data['DienTich'] >= DienTich-10) & (data['SoPhongNgu'] == SoPhongNgu ) & (data['SoToilet'] == SoToilet) & (data['ChuDauTu'] == ChuDauTu)].mean()
+        dochinhxac = data[(data['DienTich'] <= DienTich+10) & (data['DienTich'] >= DienTich-10) & (
+            data['SoPhongNgu'] == SoPhongNgu) & (data['SoToilet'] == SoToilet) & (data['ChuDauTu'] == ChuDauTu)].mean()
     elif (ChuDauTu == 0):
-        dochinhxac = data[(data['DienTich']<=DienTich+10)&(data['DienTich'] >= DienTich-10) & (data['SoPhongNgu'] == SoPhongNgu ) & (data['SoToilet'] == SoToilet) & (data['Quan'] == Quan)].mean()
+        dochinhxac = data[(data['DienTich'] <= DienTich+10) & (data['DienTich'] >= DienTich-10) & (
+            data['SoPhongNgu'] == SoPhongNgu) & (data['SoToilet'] == SoToilet) & (data['Quan'] == Quan)].mean()
     else:
-        dochinhxac = data[(data['DienTich']<=DienTich+10)&(data['DienTich'] >= DienTich-10) & (data['SoPhongNgu'] == SoPhongNgu ) & (data['SoToilet'] == SoToilet) & (data['Quan'] == Quan)& (data['ChuDauTu'] == ChuDauTu)].mean()
+        dochinhxac = data[(data['DienTich'] <= DienTich+10) & (data['DienTich'] >= DienTich-10) & (data['SoPhongNgu'] ==
+                                                                                                   SoPhongNgu) & (data['SoToilet'] == SoToilet) & (data['Quan'] == Quan) & (data['ChuDauTu'] == ChuDauTu)].mean()
 
     gia_m2 = float(dochinhxac['GiaTien'])/(dochinhxac['DienTich']*1e6)
 
@@ -176,16 +178,16 @@ def get_percent():
     else:
         phantram = (dudoan/gia_m2)*100
 
-    phantram = round(phantram,0)
+    phantram = round(phantram, 0)
     print(gia_m2)
 
-
     return jsonify(str(phantram)+'%')
+
 
 @app.route('/apartment/', methods=['GET'])
 def get_predict():
     input = request.args.to_dict()
-    
+
     if 'DienTich' in input:
         DienTich = input['DienTich']
         print(DienTich)
@@ -260,17 +262,23 @@ def get_predict():
         NoiThat = data['NoiThat'].mean()
     if 'ChuDauTu' in input:
         ChuDauTu = input['ChuDauTu']
-        for j in ChuDauTu_data.keys():
-            if(j == ChuDauTu):
-                ChuDauTu = ChuDauTu_data[j]
+        if(ChuDauTu != ''):
+            for j in ChuDauTu_data.keys():
+                if(j == ChuDauTu):
+                    ChuDauTu = ChuDauTu_data[j]
+        else:
+            ChuDauTu = 0
         print(ChuDauTu)
     else:
         ChuDauTu = data['ChuDauTu'].mean()
     if 'Quan' in input:
         Quan = input['Quan']
-        for j in Quan_data.keys():
-            if(j == Quan):
-                Quan = Quan_data[j]
+        if(Quan != ''):
+            for j in Quan_data.keys():
+                   if(j == Quan):
+                    Quan = Quan_data[j]
+        else:
+            Quan = 0
         print(Quan)
     else:
         Quan = data['Quan'].mean()
@@ -297,10 +305,10 @@ def get_predict():
         else:
             LoaiTin = int(LoaiTin)
     else:
-        LoaiTin = data['LoaiTin'].mean()										
-    
+        LoaiTin = data['LoaiTin'].mean()
 
-    ThongTin = [DienTich, SoPhongNgu, SoToilet,ChuDauTu,ViDo,KinhDo,NoiThat,LoaiTin,Quan,HuongNha,HuongBanCong]
+    ThongTin = [DienTich, SoPhongNgu, SoToilet, ChuDauTu, ViDo,
+                KinhDo, NoiThat, LoaiTin, Quan, HuongNha, HuongBanCong]
 
     ThongTin = np.array(ThongTin)
 
@@ -310,7 +318,7 @@ def get_predict():
 
     dudoan = float(dudoan[0])/(DienTich*1e6)
 
-    dudoan = round(dudoan,1)
+    dudoan = round(dudoan, 1)
 
     dudoan_text = " triệu/m2"
 
